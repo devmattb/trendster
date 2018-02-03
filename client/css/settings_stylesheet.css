@@ -1,0 +1,27 @@
+.tabs .tab a{
+    font-size: 16px!important;
+    color:#666666!important;
+}
+.tabs .tab a:hover,.tabs .tab a.active {
+    background-color:transparent!important;
+    color:#007acc!important;
+}
+.tabs .tab.disabled a,.tabs .tab.disabled a:hover {
+    color:rgba(102,147,153,0.7); /*UNCHANGED*/
+}
+.tabs .indicator {
+    background-color:#4db8ff!important;
+}
+
+.settingsChangeBtn {
+
+    margin-top: -40px;
+    margin-left: 10px;
+}
+
+.card h5 {
+
+  font-size: 15px;
+  margin-left: 30px;
+
+}

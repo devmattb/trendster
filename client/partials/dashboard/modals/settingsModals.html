@@ -1,0 +1,65 @@
+<template name="settingsModals">
+
+  <div id="editSiteInfo" class="modal modal-fixed-footer">
+      <div class="modal-content row">
+
+        <form id="addTags" class="col s6" >
+
+          <div class="row">
+            <div class="input-field col s12">
+              <h5 style="font-size: 15px;" > Type a tag. Press "Enter" between tags: </h5>
+              <div id="tags" name="tags" class="chips chips-autocomplete"></div>
+            </div>
+          </div>
+
+          <div class="center-align">
+
+             <button type="submit" role="submit" class="waves-effect waves-light center-align btn light-blue">Add Tags</button>
+
+          </div>
+
+        </form>
+
+        <div id="removeTags" class="col s6" >
+          <br>
+          <h5 style="font-size: 15px;" >Remove current tags from your site:</h5>
+
+          <!-- Current tags -->
+          {{{siteChipsReadable}}}
+
+        </div>
+
+        <form id="changeDesc" class="col s12">
+
+          <div class="row">
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <textarea id="desc" name="desc" class="materialize-textarea" data-length="150"></textarea>
+                  <label for="desc">New site description</label>
+                </div>
+              </div>
+
+          </div>
+
+         <div style="margin-top: -60px;" class="center-align">
+
+            <button type="submit" role="submit" class="waves-effect waves-light center-align btn light-blue">Change Description</button>
+
+         </div>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat ">CLOSE</a>
+      </div>
+  </div>
+  <script>
+
+    $('.chips').on('chip.delete', function(e, chip){
+      alert("Data?");
+    });
+
+  </script>
+</template>

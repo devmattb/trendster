@@ -1,0 +1,153 @@
+<template name="LoginLayout">
+  <header>
+
+      {{> includes }}
+
+  </header>
+
+  <main>
+
+    {{> preloader}}
+    {{> allModals}}
+    <section class="containerSection">
+    {{> navbar}}
+
+    <div class="col s12 m12 l12 row">
+
+        <br><br>
+        <h1 style="color: #fff;" class="center-align flow-text">
+            <span style="font-size: 60px;">Login / Sign Up </span>
+            <br><br>
+            Take the first step towards more exposure.
+        </h1>
+        <br><br>
+
+    <div class="containerSectionWhite">
+
+        <!-- Login -->
+        <div class="col s6 m6 l6 row">
+
+            <form id="loginForm" class="col s9 offset-s1">
+
+              <h5 class="center-align"> Login </h5>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="email" type="email" class="validate">
+                  <label for="email">Email</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="pass" type="password" class="validate">
+                  <label for="pass">Password</label>
+                </div>
+              </div>
+
+              <div class="center-align">
+
+                <button type="submit" role="submit" class="waves-effect waves-light center-align btn light-blue">Login</button>
+
+             </div>
+
+            </form>
+
+        </div>
+
+        <!-- Sign Up -->
+        <div id="createAccountForm" style="border-left: 1px solid grey;" class="col s6 m6 l6">
+
+            <form class="col s9 offset-s1">
+
+              <h5 class="center-align"> Sign  Up </h5>
+
+              <div class="row">
+                <div class="input-field col s6">
+                  <input id="firstName" type="text" class="validate">
+                  <label for="firstName">First Name</label>
+                </div>
+                <div class="input-field col s6">
+                  <input id="displayName" type="text" class="validate">
+                  <label for="displayName">Display Name</label>
+                </div>
+              </div>
+
+             <div class="input-field col s12">
+                <select id="media" name="media" for="media" multiple>
+                  <option value="" disabled selected>Choose your option</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="Twitter">Twitter</option>
+                  <option value="Youtube">Youtube</option>
+                  <option value="Snapchat">Snapchat</option>
+                  <option value="Pinterest">Pinterest</option>
+                  <option value="Tumblr">Tumblr</option>
+                  <option value="Other">Other</option>
+                </select>
+                <label>Your Social Media Pages</label>
+            </div>
+
+              <div class="input-field col s12">
+                <select id="type" name="type" for="type">
+                  <option value="" disabled selected>Choose your option</option>
+                  <option value="Social Media Influencer">Social Media Influencer</option>
+                  <option value="Business/Company">Business/Company</option>
+                  <option value="Other">Other</option>
+                </select>
+                <label>Website Category</label>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="email" type="email" class="validate">
+                  <label for="email">Email</label>
+                </div>
+                <div class="input-field col s6">
+                  <input id="pass" type="password" class="validate">
+                  <label for="pass">Password</label>
+                </div>
+                <div class="input-field col s6">
+                  <input id="pass2" type="password" class="validate">
+                  <label for="pass2">Repeat Password</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="alphaKey" type="text" class="validate">
+                  <label for="alphaKey">Alpha Key (Optional)</label>
+                </div>
+              </div>
+
+             <p class="center-align">
+               <input type="checkbox" class="filled-in" id="agreedEmailList" checked="checked" />
+               <label for="agreedEmailList">I want news and offers on email</label>
+                <br>
+
+                <input type="checkbox" class="filled-in" id="agreedTermsOfUse" checked="checked" />
+               <label for="agreedTermsOfUse">I agree to the <a href="#modal1">Terms of Use</a></label>
+             </p>
+
+             <div class="center-align">
+
+                <button type="submit" role="submit" class="waves-effect waves-light center-align btn light-blue">Register</button>
+                <br>
+                <p style="font-size: 1.6vmin;" class="flow-text">
+                    Please note that you will not have full access to our service unless we have granted you an Alpha Key.
+                    You may add a recieved Alpha Key later, once you're signed in.
+                </p>
+
+             </div>
+
+            </form>
+
+        </div>
+        </div>
+
+    </div>
+
+  </section>
+</main>
+
+</template>

@@ -1,0 +1,139 @@
+<template name="HomeLayout">
+  <header>
+
+      {{> includes }}
+
+      <!-- TRENDSTER HOME STYLESHEET -->
+      <link rel="stylesheet" type="text/css" href="css/home_stylesheet.css">
+
+  </header>
+
+  <main>
+    {{> preloader}}
+    {{> allModals}}
+    <section id="home" class="row">
+    {{> navbar}}
+
+    <!-- HOME PAGE -->
+    <div class="col s12 m12 l12">
+        <br>
+        <h1 class="center-align flow-text hide-on-med-and-down scale-transition scale-out pageHeader">
+            <img src="img/homepage/logo_white.png" class="responsive-image" style="margin-left: -30px; width: 450px;">
+            <br><br>
+            Make a profile with the same functionality as a website.
+        </h1>
+
+        <h1 style="font-size: 25px;" class="center-align flow-text hide-on-large-only scale-transition scale-out pageHeader">
+            <br><br>
+            <b style="font-weight: 400;">Take control of your influence. Create a website, Free. </b>
+        </h1>
+
+        <div class="center-align">
+            <a href="login" id="getStarted" class="waves-effect waves-light btn-large light-blue scale-transition scale-out"> Get Started</a>
+            <a href="about" id="readMore" class="waves-effect waves-dark btn-large grey lighten-5 scale-transition scale-out" style="color: #000!important;">Read More</a>
+        </div>
+
+    </div>
+
+    <div id="preamble" class="col s12 m12 l12 #fafafa grey lighten-5">
+
+        <!-- MED AND LARGE -->
+        <div class="container row" style="margin-top: 20px;">
+
+            <div class="hide-on-small-only">
+            <div class="col s4 m4 l4">
+
+                <h4 class="center-align flow-text">
+                    <span style="font-weight: 400;">Free, Easy to Use </span>
+                    <br>
+                    <i class="material-icons preamble-icon">polymer</i>
+                </h4>
+
+                <p style="font-size: 2vmin;" class="flow-text center-align">
+                    Yep. You read that right, you can set up your own website completely free. Take action today!
+                </p>
+
+            </div>
+
+            <div class="col s12 m4 l4">
+
+                <h4 class="center-align flow-text">
+                    <span style="font-weight: 400;">Made for Rising Influencers</span>
+                    <br>
+                    <i class="material-icons preamble-icon">star</i>
+                </h4>
+
+                <p style="font-size: 2vmin;" class="flow-text center-align">
+                    Are you an up-and-comming influencer with increasing amount of exposure? Then this is the perfect tool for you. Increase your impact through your Trendster Site!
+                </p>
+
+            </div>
+
+            <div class="col s12 m4 l4">
+
+                <h4 class="center-align flow-text">
+                    <span style="font-weight: 400;">Create a Shop</span>
+                    <br>
+                    <i class="material-icons preamble-icon">payment</i>
+                </h4>
+
+                <p style="font-size: 2vmin;" class="flow-text center-align">
+                    Set up a shop easily and get paid online for your services or products. Why? Because who doesn't want to monetize their impact?
+                </p>
+
+            </div>
+            </div>
+
+            <!-- SMALL -->
+            <div class="hide-on-med-and-up">
+              <div class="col s12 m4 l4">
+
+                  <h4 class="center-align flow-text">
+                      <span style="font-size: 7vmin; font-weight: 400;">Free, Easy to Use </span>
+                      <br>
+                      <i style="font-size: 15vmin !important;" class="material-icons preamble-icon">polymer</i>
+                  </h4>
+
+                  <p style="font-size: 5vmin;" class="flow-text center-align">
+                      Yep. You read that right, you can set up your own website completely free. Take action today!
+                  </p>
+
+              </div>
+
+              <div class="col s12 m4 l4">
+
+                  <h4 class="center-align flow-text">
+                      <span style="font-size: 7vmin;  font-weight: 400;">Made for Rising Influencers</span>
+                      <br>
+                      <i style="font-size: 15vmin !important;" class="material-icons preamble-icon">star</i>
+                  </h4>
+
+                  <p style="font-size: 5vmin;" class="flow-text center-align">
+                      Are you an up-and-comming influencer with increasing amount of exposure? Then this is the perfect tool for you. Increase your impact today!
+                  </p>
+
+              </div>
+
+              <div class="col s12 m4 l4">
+
+                  <h4 class="center-align flow-text">
+                      <span style="font-size: 7vmin; font-weight: 400;">Create a Shop</span>
+                      <br>
+                      <i style="font-size: 15vmin !important;" class="material-icons preamble-icon">payment</i>
+                  </h4>
+
+                  <p style="font-size: 5vmin;" class="flow-text center-align">
+                      Set up a shop easily and get paid online for your services or products. Why? Because who doesn't want to monetize their impact?
+                  </p>
+
+              </div>
+            </div>
+
+        </div>
+
+    </div>
+    </section>
+
+  </main>
+
+</template>

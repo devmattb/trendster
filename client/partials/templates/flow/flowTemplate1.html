@@ -1,0 +1,168 @@
+<template name="flowTemplate1">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>
+
+      window.setTimeout(function() {
+        $(".quarterFlow").removeClass("scale-out");
+      },200);
+
+      Tracker.afterFlush(function() {
+
+        // Init
+        $(".button-collapse").sideNav();
+
+        var snapShowingQR = false; // TODO: Fix click snap break anim b4 click FB/IG/YT
+
+        $(".coverIcon").click(function() {
+
+            var clickedIcon = $(this);
+
+            var divHolder = $(this).parent().parent().parent();
+            //divHolder.removeClass("removeThisAnim"); // Do not remove this div.
+
+            if ( !divHolder.hasClass("snapChatDiv") ) {
+
+            $(".removeThisAnim").toggleClass("scale-out"); // Scale unwanted divs.
+
+            } else {
+
+                clickedIcon.fadeOut(200);
+
+                if ( !snapShowingQR ) {
+
+                    snapShowingQR = true;
+                    window.setTimeout( function(){
+                        clickedIcon.attr("src", "img/dashboard/template_images/homeTemplate1/snapchat_example_qr.png");
+                        clickedIcon.fadeIn(200);
+                    },300)
+
+                } else {
+
+                    snapShowingQR = false;
+                    window.setTimeout( function(){
+                        clickedIcon.attr("src", "img/dashboard/template_images/homeTemplate1/snapchat_logo.png");
+                        clickedIcon.fadeIn(200);
+                    },300)
+
+                }
+
+            }
+
+        });
+
+    });
+
+  </script>
+
+  <style>
+
+      .quarterFlow { height: 46.2vmin;}
+
+      .quarterFlow .dummy { height: 15.16vmin;  }
+
+      .iconHolder { height: 15.16vmin; }
+
+      .coverIcon {transition: 0.2s; background: rgba(0,0,0,0);}
+      .coverIcon:hover{transform: scale(1.1); cursor: pointer; }
+
+  </style>
+
+</head>
+
+<body>
+
+  <nav>
+    <div class="t-nav t-colored-container nav-wrapper z-depth-5">
+      <a href="#!" style="margin-left: 10px;" class="t-text-container t-double-ele brand-logo hide-on-med-and-down">DISPLAY_NAME</a>
+      <a href="#!" class="t-text-container t-double-ele brand-logo hide-on-large-only">DISPLAY_NAME</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a class="t-text-container t-double-ele" href="sass.html">HOME</a></li>
+        <li><a class="t-text-container t-double-ele" href="badges.html">FLOW</a></li>
+        <li><a class="t-text-container t-double-ele" href="collapsible.html">SHOP / SERVICES</a></li>
+        <li><a class="t-text-container t-double-ele" href="mobile.html">CONTACT</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li><a class="t-text-container t-double-ele" href="sass.html">HOME</a></li>
+        <li><a class="t-text-container t-double-ele" href="badges.html">FLOW</a></li>
+        <li><a class="t-text-container t-double-ele" href="collapsible.html">SHOP / SERVICES</a></li>
+        <li><a class="t-text-container t-double-ele" href="mobile.html">CONTACT</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- FLOW -->
+  <div>
+
+    <div class="row" style="margin: 0px;">
+
+        <div class="t-colored-container quarterFlow col s12 m6 l6 blue lighten-2 removeThisAnim scale-transition scale-out">
+
+            <!-- Cover Icon Div -->
+            <div>
+                <div class="dummy center-align"></div>
+
+                <div class="iconHolder center-align">
+                    <img src="img/dashboard/template_images/homeTemplate1/facebook_logo.png" style="width: 22%;" class="coverIcon z-depth-5 hoverable" >
+                </div>
+
+                <div class="dummy center-align"></div>
+            </div>
+
+        </div>
+
+        <div class="t-colored-container quarterFlow col s12 m6 l6 yellow lighten-2 removeThisAnim scale-transition scale-out adjustBox snapChatDiv">
+
+            <!-- Cover Icon Div -->
+            <div>
+                <div class="dummy center-align"></div>
+
+                <div class="iconHolder center-align">
+                    <img src="img/dashboard/template_images/homeTemplate1/snapchat_logo.png" style="width: 22%;" class="coverIcon z-depth-5 hoverable" >
+                </div>
+
+                <div class="dummy center-align"></div>
+            </div>
+
+        </div>
+
+        <div class="t-colored-container quarterFlow col s12 m6 l6 orange lighten-2 removeThisAnim scale-transition scale-out adjustBox">
+
+            <!-- Cover Icon Div -->
+            <div>
+                <div class="dummy center-align"></div>
+
+                <div class="iconHolder center-align">
+                    <img src="img/dashboard/template_images/homeTemplate1/instagram_logo.png" style="width: 22%;" class="coverIcon z-depth-5 hoverable" >
+                </div>
+
+                <div class="dummy center-align"></div>
+            </div>
+
+        </div>
+
+        <div class="t-colored-container quarterFlow col s12 m6 l6 red lighten-1 removeThisAnim scale-transition scale-out adjustBox">
+
+            <!-- Cover Icon Div -->
+            <div>
+                <div class="dummy center-align"></div>
+
+                <div class="iconHolder center-align">
+                    <img src="img/dashboard/template_images/homeTemplate1/youtube_logo.png" style="width: 22%;" class="coverIcon z-depth-5 hoverable" >
+                </div>
+
+                <div class="dummy center-align"></div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+  </div>
+
+</body>
+
+</template>

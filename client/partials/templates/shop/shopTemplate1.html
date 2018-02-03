@@ -1,0 +1,525 @@
+<template name="shopTemplate1">
+
+<head>
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <script>
+
+      window.setTimeout(function(){
+           $(".card").removeClass("scale-out");
+      }, 100)
+
+      Tracker.afterFlush(function() {
+
+        /**
+        *       INITIALIZE PLUGINS
+        **/
+
+        // Initialize sidenav button
+        $(".button-collapse").sideNav();
+
+        //Initialize modal
+        $('.modal').modal();
+
+        $('.dropdown-button').dropdown({
+          hover: true, // Activate on hover
+          gutter: 0, // Spacing from edge
+          belowOrigin: false, // Displays dropdown below the button
+          alignment: 'left', // Displays dropdown with edge aligned to the left of button
+          stopPropagation: false // Stops event propagation
+        });
+
+        // Boolean used to control Menu Item Flow...
+        var hasClassActive = false;
+        /**
+        *       HOVER MENU ITEM FUNTION:
+        **/
+        function toggleActiveMenuItem(ele){
+
+            if ( !hasClassActive ) {
+                ele.toggleClass("active");
+                ele.toggleClass("red");
+                ele.toggleClass("lighten-1");
+            }
+
+        }
+
+        $("#shopMenu .collection li").hover(function(){
+
+            if ( $(this).hasClass("active") ){
+
+                hasClassActive = true;
+
+            } else {
+
+                toggleActiveMenuItem($(this));
+
+            }
+
+
+        }, function(){
+
+            if ( !hasClassActive ) {
+
+                toggleActiveMenuItem($(this));
+
+            } else {
+
+                hasClassActive = false;
+            }
+
+        });
+
+        /**
+        *       CLICK MENU ITEM FUNTION:
+        **/
+        $("#shopMenu .collection li").click(function(){
+
+            if( !hasClassActive ) {
+
+            $("#shopMenu .collection li").removeClass("active");
+            $("#shopMenu .collection li").removeClass("red");
+            $("#shopMenu .collection li").removeClass("lighten-1");
+
+            window.setTimeout(function(){
+                $(this).addClass("active");
+                $(this).addClass("red");
+                $(this).addClass("lighten-1");
+            },1);
+
+            }
+
+        });
+
+        /**
+        *   Add item to cart script
+        **/
+        $("#shopContainer .card .btn-floating").click(function(){
+
+            Materialize.toast('Added item to cart!', 2000);
+
+        });
+
+      });
+
+  </script>
+
+  <style>
+
+    .containerSection {
+
+        width: 100%;
+        height: 300px;
+        background-color: rgba(0, 102, 153, 0.85);
+
+    }
+
+   .containerSection::after{
+
+        background-image: url('img/dashboard/template_images/homeTemplate1/bkgrnd-1.png');
+        content: '';
+        display: block;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+        top: -100px;
+
+    }
+
+    .waves-effect.waves-blue .waves-ripple {
+      background-color: rgba(0, 136, 204, 0.65);
+    }
+
+    .contactIcons {
+
+        position: relative;
+        top: 0.5vmin;
+        font-size: 2.5vmin;
+
+    }
+
+    .logo {
+
+        width: 200px;
+        position: relative;
+        top: 5px;
+        left: 15px;
+
+    }
+
+    .cardSmallHeader { font-size: 2.5vmin; }
+
+    input[type="search"] {
+
+        height: 60px !important; /* or height of nav */
+        border-bottom: 0px;
+    }
+
+    #shopContainer {
+
+        margin: 0px;
+        z-index: 10;
+        padding-top: 20px;
+        padding-bottom: 100px;
+        height: 700px;
+        width: 100%;
+
+    }
+
+    #shopMenu {
+
+        padding: 0px;
+        position: fixed;
+        min-height: 680px;
+        max-height: 1280px;
+        background: #fff;
+
+    }
+
+    #shopMenuFooter {
+
+        margin-left: 10px;
+        position: absolute;
+        bottom: 50px;
+
+    }
+
+    #shopMenu .collection li:hover {
+
+        cursor: pointer;
+
+    }
+
+    #mobileCategoryMenu {
+
+        color: #fff;
+        position: absolute;
+        top: 205px;
+    }
+
+  </style>
+
+</head>
+
+<body id="shopPage" class="grey lighten-3">
+
+  <section class="containerSection">
+
+        <nav>
+          <div class="t-nav t-colored-container nav-wrapper z-depth-5">
+            <a href="#!" style="margin-left: 10px;" class="t-text-container t-double-ele brand-logo hide-on-med-and-down">DISPLAY_NAME</a>
+            <a href="#!" class="t-text-container t-double-ele brand-logo hide-on-large-only">DISPLAY_NAME</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+              <li><a class="t-text-container t-double-ele" href="">HOME</a></li>
+              <li><a class="t-text-container t-double-ele" href="">FLOW</a></li>
+              <li><a class="t-text-container t-double-ele" href="">SHOP / SERVICES</a></li>
+              <li><a class="t-text-container t-double-ele" href="">CONTACT</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+              <li><a class="t-text-container t-double-ele" href="">HOME</a></li>
+              <li><a class="t-text-container t-double-ele" href="">FLOW</a></li>
+              <li><a class="t-text-container t-double-ele" href="">SHOP / SERVICES</a></li>
+              <li><a class="t-text-container t-double-ele" href="">CONTACT</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- SHOP MENU -->
+        <div class="row">
+
+            <!-- MED AND LARGE -->
+            <div id="shopMenu" class="col hide-on-small-only m4 l2 row z-depth-5 t t-light-container">
+                <br>
+                <div style="font-size: 2vmin;" class="center-align"> <p class="t t-text-container">CATEGORIES</p> </div>
+                <br>
+                <ul class="collection t t-light-container">
+
+                    <li class="collection-item active red lighten-1 t t-text-container">shop_category_1</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_2</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_3</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_4</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_5</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_6</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_7</li>
+                    <li class="collection-item t t-text-container t-double-ele t-light-container">shop_category_8</li>
+
+                </ul>
+
+                <div id="shopMenuFooter" class="center-align">
+
+                    <div class="hide-on-med-and-down">
+                        <p class="cardSmallHeader t-text-container"> Total: $ 0 </p>
+                        <button style="margin: 5px;" class="waves-effect waves-light btn-large red lighten-1 waves-effect waves-light t t-colored-container t-double-ele"> View Cart </button>
+                        <button style="margin: 5px;" class="waves-effect waves-light btn-large red lighten-1 waves-effect waves-light t t-colored-container t-double-ele"> Checkout </button>
+                    </div>
+
+                    <div class="hide-on-large-only">
+                        <p style="font-size: 3vmin;" class="cardSmallHeader t-text-container"> Total: $ 0 </p>
+                        <button style="margin: 5px;" class="waves-effect waves-light btn red lighten-1 waves-effect waves-light t t-colored-container t-double-ele"> View Cart </button>
+                        <button style="margin: 5px;" class="waves-effect waves-light btn red lighten-1 waves-effect waves-light t t-colored-container t-double-ele"> Checkout </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SMALL -->
+            <div id="mobileCategoryMenu" class="hide-on-med-and-up">
+              <!-- Dropdown Trigger -->
+              <a class='dropdown-button btn-large red lighten-1 z-depth-5' href='#' data-activates='dropdown1'>CATEGORIES</a>
+
+              <!-- Dropdown Structure -->
+              <ul id='dropdown1' class='dropdown-content'>
+
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele" >category_1</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele" >category_2</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele" >category_3</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele">category_4</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele">category_5</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele">category_6</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele">category_7</a></li>
+                    <li><a style="color: #333;" class="t t-text-container t-double-ele">category_8</a></li>
+                    <li class="divider"></li>
+                    <li><a style="color: #333;">Close</a></li>
+              </ul>
+            </div>
+
+        </div>
+
+        <div class="col s12 m12 l12">
+
+            <br><br>
+            <!-- LARGE -->
+            <h1 class="center-align flow-text hide-on-med-and-down white-text t t-text-container t-triple-ele" style="font-size: 60px;">
+                SHOP_NAME
+            </h1>
+            <!-- MED -->
+            <h1 style="margin-right: 50px; font-size: 60px;" class="right-align flow-text hide-on-large-only hide-on-small-only white-text t t-text-container t-triple-ele">
+                SHOP_NAME
+            </h1>
+            <!-- SMALL -->
+            <h1 class="center-align flow-text hide-on-med-and-up white-text t t-text-container t-triple-ele" style="font-size:40px;">
+                SHOP_NAME
+            </h1>
+            <br><br>
+
+            <!-- SHOWING SHOP ITEM CONTAINER -->
+            <div id="shopContainer" class="grey lighten-3 t t-background">
+
+                <div class="row">
+
+                    <div class="col offset-s0 offset-m4 offset-l2 s12 m8 l10 " >
+
+                          <div class="">
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- SHOP ITEM -->
+                            <div class="col s12 m6 l4">
+                              <div class="card scale-transition scale-out">
+                                <div class="card-image">
+                                  <img class="t t-img-container" src="img/homepage/people-1.jpeg">
+                                  <h5 class="card-title t t-text-container white-text">ITEM_NAME</h5>
+                                  <a class="btn-floating halfway-fab waves-effect waves-light red t t-colored-container"><i class="material-icons t t-colored-container">add</i></a>
+                                </div>
+                                <div class="card-content t t-light-container">
+                                  <p class="t t-text-container">Description description description description description description description description.</p>
+                                  <p class="cardSmallHeader hide-on-small-only t t-text-container t-double-ele" style="position:relative; top: 10px;">Price: $25</p>
+                                  <p class="cardSmallHeader hide-on-med-and-up t t-text-container t-double-ele" style="position:relative; top: 10px; font-size: 4.5vmin;">Price: $25</p>
+                                </div>
+                              </div>
+                            </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+</body>
+
+</template>

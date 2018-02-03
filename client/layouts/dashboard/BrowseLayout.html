@@ -1,0 +1,232 @@
+<template name="BrowseLayout">
+    <header>
+
+    {{> includes }}
+    <link rel="stylesheet" type="text/css" href="css/browse_stylesheet.css">
+
+    <script>
+        // Make sure DOM is updated...
+        Tracker.afterFlush( function () {
+            var listItems = $("#browseMenu .collection li");
+            // Boolean used to control Menu Item Flow...
+            var hasClassActive = false;
+            /**
+            *       HOVER MENU ITEM FUNTION:
+            **/
+            function toggleActiveMenuItem(ele){
+
+                if ( !hasClassActive ) {
+                    ele.toggleClass("active");
+                    ele.toggleClass("blue");
+                    ele.toggleClass("lighten-1");
+                }
+
+            }
+
+            listItems.hover(function(){
+
+                if ( $(this).hasClass("active") ){
+
+                    hasClassActive = true;
+
+                } else {
+
+                    toggleActiveMenuItem($(this));
+
+                }
+
+
+            }, function(){
+
+                if ( !hasClassActive ) {
+
+                    toggleActiveMenuItem($(this));
+
+                } else {
+
+                    hasClassActive = false;
+                }
+
+            });
+
+            /**
+            *       CLICK MENU ITEM FUNTION:
+            **/
+            listItems.click(function(){
+
+                if( !hasClassActive ) {
+
+                  listItems.removeClass("active");
+                  listItems.removeClass("blue");
+                  listItems.removeClass("lighten-1");
+
+                  window.setTimeout(function(){
+                      $(this).addClass("active");
+                      $(this).addClass("blue");
+                      $(this).addClass("lighten-1");
+                  },1);
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+    </header>
+
+    <main>
+      {{> preloader}}
+      <section class="containerSection">
+      {{> dashNavbar }}
+      {{> feedbackModals }}
+      <div class="col s12 m12 l12 row">
+
+          <br><br><br>
+          <!-- LARGE -->
+          <h1 style="color: #fff;" class="center-align flow-text hide-on-med-and-down">
+              <span style="font-size: 60px;"> Browse </span>
+          </h1>
+          <!-- MED -->
+          <h1 style="color: #fff;" class="center-align flow-text hide-on-large-only hide-on-small-only">
+              <span style="font-size: 50px; margin-left: 15px; "> Browse </span>
+          </h1>
+          <!-- SMALL -->
+          <h1 style="color: #fff; margin-top: -10px;" class="center-align flow-text hide-on-med-and-up">
+              <span style="font-size:40px;margin-left: 20px;"> Browse </span>
+          </h1>
+          <div class="col s6 m6 l6 offset-s3 offset-m3 offset-l3" style="margin-bottom: -40px!important; margin-top: -20px!important;">
+            <form>
+              <div class="input-field hide-on-med-and-down">
+                <input placeholder="Search users" id="search" type="search" required>
+                <label class="label-icon" for="search"><i style="margin-top: 5px!important;" class="material-icons">search</i></label>
+                <i style="margin-top: 14px!important;" class="material-icons">close</i>
+              </div>
+
+              <div class="input-field hide-on-small-only hide-on-large-only col s12 offset-s2">
+                <input placeholder="Search users" id="search" type="search" required>
+                <label class="label-icon" for="search"><i style="margin-top: 5px!important;" class="material-icons">search</i></label>
+                <i style="margin-top: 14px!important;" class="material-icons">close</i>
+              </div>
+
+              <div class="input-field hide-on-med-and-up col s12 offset-s1">
+                <input id="search" type="search" required>
+                <label class="label-icon" for="search"><i style="margin-top: 5px!important;" class="material-icons">search</i></label>
+              </div>
+
+            </form>
+          </div>
+
+      </div>
+
+      <!-- SHOP MENU -->
+      <div class="row">
+
+          <!-- MED AND LARGE -->
+          <div id="browseMenu" class="col hide-on-small-only m4 l2 row z-depth-3 grey lighten-3">
+              <br>
+              <div style="font-size: 2vmin;" class="center-align"> CATEGORIES </div>
+              <br>
+              <ul class="collection">
+
+                  <li class="collection-item active blue lighten-1"><i style="font-size: 17px;" class="fa fa-users black-text" aria-hidden="true"></i> &nbsp; Following</li>
+                  <li class="collection-item"><i style="font-size: 17px;" class="fa fa-free-code-camp red-text" aria-hidden="true"></i> &nbsp; Trending</li> <!-- fa-line-chart -->
+                  <li class="collection-item">Athletes</li>
+                  <li class="collection-item">Adventurers / Travelers</li>
+                  <li class="collection-item">Blogs / Vlogs</li>
+                  <li class="collection-item">Businesses</li>
+                  <li class="collection-item">Cinematographers</li>
+                  <li class="collection-item">Comedians</li>
+                  <li class="collection-item">Gamers / Esport</li>
+                  <li class="collection-item">Other</li>
+
+              </ul>
+
+          </div>
+
+          <!-- SMALL -->
+          <div id="mobileCategoryMenu" class="hide-on-med-and-up">
+            <!-- Dropdown Trigger -->
+            <a class='dropdown-button btn-large blue lighten-1 z-depth-5' href='#' data-activates='dropdown1'>CATEGORIES</a>
+
+            <!-- Dropdown Structure -->
+            <ul id='dropdown1' class='dropdown-content'>
+
+                  <li><a style="color: #333;" class="active blue lighten-1 white-text" >Following</a></li>
+                  <li><a style="color: #333;">Trending</a></li>
+                  <li><a style="color: #333;">Athletes</a></li>
+                  <li><a style="color: #333;">Adventurers / Travelers</a></li>
+                  <li><a style="color: #333;">Blogs / Vlogs</a></li>
+                  <li><a style="color: #333;">Businesses</a></li>
+                  <li><a style="color: #333;">Cinematographers</a></li>
+                  <li><a style="color: #333;">Comedians</a></li>
+                  <li><a style="color: #333;">Gamers / Esport</a></li>
+                  <li><a style="color: #333;">Other</a></li>
+                  <li class="divider"></li>
+                  <li><a style="color: #333;">Close</a></li>
+            </ul>
+          </div>
+
+      </div>
+
+          <!-- SHOWING SITE CONTAINER -->
+          <div id="siteContainer" class="grey lighten-3">
+
+              <div class="row">
+
+                  <div class="col offset-s0 offset-m4 offset-l2 s12 m8 l10 " >
+
+                        <div class="">
+
+                          <!-- SITE -->
+                          <div class="col s12 m6 l4">
+                            <div class="card scale-transition scale-out hoverable">
+                              <div class="card-image">
+                                <img class="materialboxed" width="650" src="img/homepage/people-1.jpeg">
+                                <span class="card-title">SITE_NAME</span>
+                              </div>
+                              <div class="card-content">
+                                <p>Small description.</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SITE -->
+                          <div class="col s12 m6 l4">
+                            <div class="card scale-transition scale-out hoverable">
+                              <div class="card-image">
+                                <img class="materialboxed" width="650" src="img/homepage/people-1.jpeg">
+                                <span class="card-title">SITE_NAME</span>
+                              </div>
+                              <div class="card-content">
+                                <p>Small description.</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SITE -->
+                          <div class="col s12 m6 l4">
+                            <div class="card scale-transition scale-out hoverable">
+                              <div class="card-image">
+                                <img class="materialboxed" width="650" src="img/homepage/people-1.jpeg">
+                                <span class="card-title">SITE_NAME</span>
+                              </div>
+                              <div class="card-content">
+                                <p>Small description.</p>
+                              </div>
+                            </div>
+                          </div>
+
+                  </div>
+
+              </div>
+
+          </div>
+
+      </div>
+
+  </section>
+      {{> feedbackButtons }}
+    </main>
+</template>

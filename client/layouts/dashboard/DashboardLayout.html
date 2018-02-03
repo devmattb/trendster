@@ -1,0 +1,29 @@
+<template name="DashboardLayout">
+    <header>
+
+    {{> includes }}
+
+    </header>
+
+    <main>
+      {{> preloader}}
+      {{> dashNavbar }}
+
+      {{> feedbackModals }}
+      <div class="row" >
+
+            <br>
+            <div class="col s12 center-align">
+
+                <h1> Welcome to your Dashboard </h1>
+                <h5> Learn about how the dashboard works in the video below:</h5>
+                <br>
+                <iframe width="660" height="415" src="https://www.youtube.com/embed/Wm6CUkswsNw" frameborder="0" allowfullscreen></iframe>
+
+            </div>
+
+      </div>
+
+      {{> feedbackButtons }}
+    </main>
+</template>

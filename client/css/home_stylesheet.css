@@ -1,0 +1,39 @@
+#home {
+
+    color: #fff;
+    width: 100%;
+    height: 705px;
+    background-color: rgba(0, 102, 153, 0.85);
+
+}
+
+#home::after{
+
+    background-image: url('img/homepage/people-1.jpeg');
+    content: '';
+    display: block;
+    height: 60%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+
+}
+
+.preamble-icon {
+
+    font-weight: 100;
+    font-size: 6.5vmin !important;
+    margin-top: 20px;
+    color: #006699;
+
+}
+
+#preamble {
+
+    color: #212121;
+    position: relative;
+    margin-top: 100px;
+    height: 560px;
+}
+
+#preamble div { display: none; }

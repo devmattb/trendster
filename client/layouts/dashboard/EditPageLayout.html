@@ -1,0 +1,774 @@
+<template name="EditPageLayout" >
+
+<div id="editPageLayout">
+  <script>
+
+  Tracker.afterFlush( function () {
+
+    /* TODO 's
+
+      1) Fix text selector on a Nav item class, and a Nav Logo class.
+      2) Fix minor bug in span creating and span handling for toggling bold, italic, etc.
+      3) Fix so when you "Apply to similar text items", it is only applied to text lying within a .t-light-container or a .t-colored-container
+      4) Handle re-routing paths as a result of editing a nav-item.
+
+    */
+
+    resizeWindow(); // When we resize the window, make sure the menu is resized too.
+    var selected; // The currently clicked element.
+    var imgEle; // The img element we have selected, if this is an image element. Used in MAIN FUNCTION.
+    var selText; // Our selected part of the text the user is editing.
+
+    // Get and set some range values.
+    if ( selected ) {
+      $("#fontSize").attr("value", selected.value);
+      alert("SELECTED VALUE");
+    }
+
+    /**
+    *     CHOOSE PAGE: Note the page we currently are browsing, and save it to then proceed to the next step.
+    **/
+    $("#publish").click(function(){
+
+      // IMPORTANT: Set all text to non-editable!
+      $(".t-text-container").attr("contentEditable", "false");
+
+      Materialize.toast("Published your Site successfully!", 4000, "green");
+
+      window.setTimeout(function(){ FlowRouter.go("/sitebuilder"); },50); // Redirect....
+
+      // TODO: Set all pages navbars to the newly designed navbar... REPLACE? Template dynamics gets messy...
+
+    });
+
+    function resizeWindow(){
+
+      var editorMenuHeight = $( window ).height();
+      $("#editorMenu").css({"height" : editorMenuHeight});
+
+    }
+
+    window.onresize = function(event) {
+        resizeWindow();
+    };
+
+    /**
+    *   Shows the editor menu.
+    **/
+    function showMenu() {
+      $("#userPageDiv").animate({ "width" : "80%", },200);
+      $("#editorMenu").animate({ "right" : "0%", },200);
+    }
+
+    /**
+    *   Hides the editor menu.
+    **/
+    function hideMenu() {
+      $("#userPageDiv").animate({ "width" : "100%", },200);
+      $("#editorMenu").animate({ "right" : "-20%", },200);
+    }
+
+    /**
+    *   Clears any selected element.
+    **/
+    function clearSelected() {
+      $("#editPageLayout").find(".selected").removeClass("selected");
+    }
+
+    /**
+    *                 MAIN FUNCTION:
+    *      Handles any clickable element on the page.
+    **/
+    $("#editPageLayout").on("click", function(e) {
+
+      if( e.target.href ) { e.preventDefault(); } // Prevent any links from triggering.
+
+      // Reset:
+      $(".selText").removeClass("selText"); // Remove any previously selected text.
+
+      if ( !($(e.target).hasClass("menuItem")) ) { // We don't want to select menu items.
+
+        if ( !($(e.target).is("span")) ) {
+          selected = $(e.target); // This is not a span.
+        } else {
+          selected = $(e.target).closest(".t-text-container"); // This is a simple span that is part of a bigger text div.
+        }
+
+      }
+
+      // If this is a Trendster clickable element.
+      if ( selected.hasClass("t") ) {
+
+        clearSelected();
+        selected.addClass("selected"); // Select the clicked element.
+
+        /**
+        *               HERE'S WHERE THE MAGIC HAPPENS:
+        *   Lets identify this element according to our class-protocol.
+        *
+        **/
+
+        if ( selected.hasClass("parallax-container") ) {
+
+          // SELECTED: Parallax image
+          imgEle = selected.children(".parallax").children('img');  // We are handling a parallax with an image within.
+          $(".allEditors").hide();
+          $("#imgEditor").show();
+          // Note the dimensions of this image and update the width/height sliders.
+          Template.EditPageLayout.imgWidth.set(imgEle.width());
+          Template.EditPageLayout.imgHeight.set(imgEle.height());
+
+        } else if ( selected.hasClass("t-img-container") ) {
+
+          // SELECTED: Normal image
+          imgEle = selected;
+          $(".allEditors").hide();
+          $("#imgEditor").show();
+          // Note the dimensions of this image and update the width/height sliders.
+          Template.EditPageLayout.imgWidth.set(imgEle.width());
+          Template.EditPageLayout.imgHeight.set(imgEle.height());
+
+        } else if ( selected.hasClass("t-text-container") || selected.is("span") ) {
+
+          // SELECTED: Normal text container
+          $(".allEditors").hide(); // Hide all editors.
+          $("#textEditor").show(); // Show our text editor menu.
+
+          selected.attr("contentEditable", "true"); // Set this to editable.
+          selected.attr("spellcheck", "false"); // Set this to editable.
+
+          /**
+          *     The following code grabs the selected part of the text and puts it in variable "selText"
+          **/
+          var sel, range, newNode = ""; // Reset variables.
+
+          sel = window.getSelection ? window.getSelection() : document.selection.createRange(); // FF : IE
+          if( sel.getRangeAt ) { // thats for FF
+            range = sel.getRangeAt(0);
+            newNode = document.createElement("span");
+            newNode.setAttribute('class', 'selText');
+            range.surroundContents(newNode);
+          } else { //and thats for IE7
+            sel.pasteHTML('<span class="selText">'+sel.htmlText+'</span>');
+          }
+          selText = $(".selText"); // JQ:Select the selected text and set our reference to it.
+
+        } else if ( selected.hasClass("t-colored-container") ) {
+          $(".allEditors").hide();
+          $("#containerEditor").show();
+        } else if ( selected.hasClass("t-light-container") ) {
+          $(".allEditors").hide();
+          $("#containerEditor").show();
+        } else if ( selected.hasClass("t-dark-container") ) {
+          //alert("RECOGNIZED: Dark container");
+        }
+
+        showMenu(); // Finally, show the menu populated with the right properties to modify for this element.
+
+      } else if ( !selected.hasClass("t") && !selected.hasClass("menuItem") ) { clearSelected(); hideMenu(); } // This element is not clickable, do not display the menu.
+
+    });
+
+
+    /**
+    *   Resets the filter sliders so the user understands that only one filter/effect is allowed.
+    **/
+    function resetFilterSliders() {
+
+      //TODO
+    }
+
+    /**
+    *    Handles the img-effect section, and applies filters to the extent that the user wishes.
+    **/
+    $('.imgSliders input[type=range]').on('input', function () {
+
+          resetFilterSliders(); //TODO: Reset all sliders value.
+
+          const val = $(this).val();
+
+          // Lets handle all the image filters first...
+          if ( $(this).hasClass("imgGrayscale") ) {
+            imgEle.css({"filter" : "grayscale("+val+"%)"});
+          } else if ( $(this).hasClass("imgBlur") ) {
+            imgEle.css({"filter" : "blur("+val+"px)"});
+          }  else if ( $(this).hasClass("imgBrightness") ) {
+            imgEle.css({"filter" : "brightness("+val+"%)"});
+          } else if ( $(this).hasClass("imgContrast") ) {
+            imgEle.css({"filter" : "contrast("+val+"%)"});
+          } else if ( $(this).hasClass("imgRotate") ) {
+            imgEle.css({"filter" : "hue-rotate("+val+"deg)"});
+          } else if ( $(this).hasClass("imgInvert") ) {
+            imgEle.css({"filter" : "invert("+val+"%)"});
+          } else if ( $(this).hasClass("imgOpacity") ) {
+            imgEle.css({"filter" : "opacity("+val+"%)"});
+          } else if ( $(this).hasClass("imgSaturate") ) {
+            imgEle.css({"filter" : "saturate("+val+"%)"});
+          } else if ( $(this).hasClass("imgSepia") ) {
+            imgEle.css({"filter" : "sepia("+val+"%)"});
+
+            // Now hande Width / Height.
+          } else if ( $(this).hasClass("imgWidth") ) {
+            imgEle.css({"width" : val+"px"});
+          } else if ( $(this).hasClass("imgHeight") ) {
+            imgEle.css({"height" : val+"px"});
+          }
+
+    });
+
+    /**
+    *   Image edit helper functions:
+    **/
+
+    // Resets all effects on our current image:
+    $("#imgResetEffects").click(function() {
+      imgEle.css({"filter" : "none"});
+    });
+
+    // Uploads a new image
+    $("#uploadImgWithLink").click(function(){
+
+        var val = $("#imgLink").val();
+        if ( val ) {
+          imgEle.attr("src", val);
+          Materialize.toast("Changing image...", 4000);
+        } else { Materialize.toast("You did not enter a link in the text box!", 4000, "red"); }
+
+    });
+
+    /**
+    *   Text edit helper functions:
+    **/
+
+    // Handles the toggling of "Text Emphasis"
+    $(".selTextBtn").click(function(){
+      const val = $(this).attr("name");
+
+      if ( val == "bold" ) {
+
+        // Toggle
+        if ( !(selText.css('font-weight') === 'bold') ) { // Handles bold.
+          selText.css({"font-weight": "bold"});
+        } else {
+          selText.css({"font-weight": ""});
+        }
+
+      } else if ( val == "italic" ) { // Handles italic
+
+        // Toggle
+        if ( !(selText.css('font-style') === 'italic') ) {
+          selText.css({"font-style": "italic"});
+        } else {
+          selText.css({"font-style": ""});
+        }
+
+      } else { // Handles underline AND strikethrough
+
+          // Toggle
+          if ( !(selText.css('text-decoration') === val + " solid rgb(66, 66, 66)") ) {
+            selText.css({"text-decoration": val});
+          } else {
+            selText.css({"text-decoration": "none"});
+          }
+
+      }
+
+    })
+
+    // Handles the toggling of "Paragraph Alignment"
+    $(".alignTextBtn").click(function(){
+
+      const val = $(this).attr("name");
+
+      if ( !(selected.css('text-align') === val) ) { // If this text already is aligned.
+        selected.css({'text-align' : val}); // Set to new alignment.
+      } else { selected.css({'text-align' : ""}); } // Reset alignment.
+
+    });
+
+    // Handles the resetting of text styling:
+    $("#resetTextStylingBtn").click(function(){
+
+      selected.css({'text-align' : ""});  // Reset alignment.
+
+      // Find all spans and destroy them, but keep their content.
+      while ( selected.find('span').length ) { // Do this until all spans are destroyed.
+        selected.find('span').replaceWith(function() {
+              return $(this).html();
+        });
+      }
+
+    });
+
+    /**
+    *           The following are helper-functions for clearing color in containers/text.
+    **/
+
+    // All container color classes:
+    const brightnessClasses = ["lighten-1", "lighten-2", "lighten-3", "lighten-4", "darken-1", "darken-2", "darken-3", "darken-4"];
+    const colorClasses = ["red", "pink", "purple", "indigo", "blue", "cyan", "teal", "green", "light-green", "lime", "yellow", "orange", "brown", "white", "grey", "black"];
+
+    // All text color/brightness classes:
+    const textBrightClassesArr = ["text-lighten-1","text-lighten-2","text-lighten-3","text-lighten-4","text-darken-1","text-darken-2","text-darken-3","text-darken-4"];
+    const textColorClassesArr = ["red-text","pink-text","purple-text","indigo-text","blue-text","cyan-text","teal-text","green-text","light-green-text","lime-text","yellow-text","orange-text","brown-text","white-text","grey-text","black-text"];
+
+    /**
+    *   Removes all of the color classes in the given array.
+    **/
+    function removeColorClasses(arr, selectedEle) {
+
+      for ( var i = 0; i < arr.length; i++ ) {
+        if ( selectedEle.hasClass(arr[i]) ) {
+          // Remove this class.
+          selectedEle.removeClass(arr[i]);
+        }
+      }
+
+    }
+
+    /**
+    *   Checks the text type, if its a header or bread-text, and then proceeds
+    *   to add the wanted color class.
+    *   @param val is the users new desired color.
+    *   @param arr is the array with the classes to remove from our element.
+    *   @param selectedEle is the selected element we're dealing with.
+    *   @param isColor tells us if this a color we're dealing with, or a brightness?
+    **/
+    function checkTextTypeAndChangeColor(applyToAllCheckEle, arr, val, selectedEle, isColor) {
+
+      if ( applyToAllCheckEle.is(":checked") ) { // If "Apply To all" is checked.
+
+          $(".t-text-container").each(function() {
+
+            if ( selectedEle.is("h1,h2,h3,h4,h5") && $(this).is("h1,h2,h3,h4,h5") ) {
+
+              removeColorClasses(arr, $(this)); // Remove color classes.
+
+              if (isColor) { // Checking if this is the brightness array or not.
+                $(this).addClass(val + "-text");
+              } else {
+                $(this).addClass(val);
+              }
+
+            } else if ( !selectedEle.is("h1,h2,h3,h4,h5") && !$(this).is("h1,h2,h3,h4,h5") ) { // This is a bread-text element.
+
+                removeColorClasses(arr, $(this)); // Remove color classes.
+
+                if (isColor) { // Checking if this is the brightness array or not.
+                  $(this).addClass(val + "-text");
+                } else {
+                  $(this).addClass(val);
+                }
+
+            }
+
+          }); // For each header text element, add this color class.
+
+     } else {
+       removeColorClasses(arr, selected); // Remove colors
+       if ( arr == textBrightClassesArr ) {
+         selected.addClass(val); // Add brightness
+       } else { selected.addClass(val + "-text"); } // Or add color.
+     }
+
+    }
+
+    /**
+    *   Changes font of the current paragraph to the user-inputted font.
+    **/
+    $('.fontSelector').on('change', function(e) {
+
+      if ( $("#applyFontToAllText").is(":checked") ) { // Apply to all elements?
+
+        $(".t-text-container").each(function() {
+
+          if ( selected.is("h1,h2,h3,h4,h5") && $(this).is("h1,h2,h3,h4,h5") ) {
+            $(this).css({"font-family": e.target.value});
+          } else if ( !selected.is("h1,h2,h3,h4,h5") && !$(this).is("h1,h2,h3,h4,h5") ) {
+            $(this).css({"font-family": e.target.value});
+          }
+
+        });
+
+      } else { selected.css({"font-family": e.target.value}); } // Apply only to this element.
+
+    });
+
+    /**
+    *           TEXT and CONTAINER COLOR PICKER
+    **/
+    $(".colorBox").click(function(){
+
+        // Get our color value.
+        const val = $(this).attr("name");
+
+        if ( selected.hasClass("t-light-container") || selected.hasClass("t-dark-container") || selected.hasClass("t-colored-container") ) {
+            // This is a container, and not text to be modified
+
+            if ( $("#applyToAllContainers").is(":checked") ) { // If we want to change all similar elements.
+
+              if ( selected.hasClass("t-light-container") ) {
+
+                $(".t-light-container").each(function() {
+                  removeColorClasses(colorClasses, $(this)); // Remove all unused colors.
+                  $(this).addClass(val);
+                });
+
+              } else if( selected.hasClass("t-colored-container") ) {
+
+                $(".t-colored-container").each(function(){
+                  removeColorClasses(colorClasses, $(this)); // Remove all unused colors.
+                  $(this).addClass(val);
+                });
+
+              }
+
+          } else { selected.addClass(val); } // Just this element
+
+        } else {
+          // This is text which color is to be modified.
+          checkTextTypeAndChangeColor( $("#applyToAllText"), textColorClassesArr, val, selected, true);
+
+        }
+
+    });
+
+    /**
+    *   Corrects color brightness.
+    **/
+    $('.brightnessRange input[type=range]').on('input', function () {
+
+          const val = $(this).val();
+          var containerVal;
+
+          if ( val > 0 ) {
+            containerVal = brightnessClasses[val-1]; // Grab light classes in ascending order
+          } else if ( val < 0 ) {
+            containerVal = brightnessClasses[Math.abs(val)+3]; // Grab dark classes in ascending order
+          }
+
+          if ( selected.hasClass("t-light-container") || selected.hasClass("t-colored-container") || selected.hasClass("t-dark-container") ) {
+            // This is a container, and not text to be modified
+              if ( $("#applyToAllContainers").is(":checked") ) { // If we want to change all similar elements.
+
+                if ( selected.hasClass("t-light-container") ) {
+
+                  $(".t-light-container").each(function() {
+                    removeColorClasses(brightnessClasses, $(this)); // Remove all unused colors.
+                    $(this).addClass(containerVal);
+                  });
+
+                } else if( selected.hasClass("t-colored-container") ) {
+
+                  $(".t-colored-container").each(function(){
+                    removeColorClasses(brightnessClasses, $(this)); // Remove all unused colors.
+                    $(this).addClass(containerVal);
+                  });
+
+                }
+
+              } else { selected.addClass(containerVal); } // Just this element
+
+
+          } else { // This is text which color is to be modified.
+
+            removeColorClasses(textBrightClassesArr, selected); // Remove brightness classes.
+
+            if ( val > 0 ) {
+              checkTextTypeAndChangeColor($("#applyToAllText"), textBrightClassesArr, textBrightClassesArr[val-1], selected, false); // Grab light classes in ascending order
+            } else if ( val < 0 ) {
+              checkTextTypeAndChangeColor($("#applyToAllText"), textBrightClassesArr, textBrightClassesArr[Math.abs(val)+3], selected, false);// Grab dark classes in ascending order
+            }
+
+          }
+
+
+    });
+
+
+  }); // End of Tracker.afterFlush()
+
+  </script>
+
+  {{> includes }}
+  {{> preloader }}
+
+  <!-- Editor Menu -->
+  <div id="editorMenu" class="grey lighten-5 menuItem">
+      <br>
+      <h5 class="center-align"> MENU </h5>
+      <br>
+
+      <div id="imgEditor" class="allEditors menuItem">
+
+        <ul class="collapsible menuItem" data-collapsible="accordion" style="margin-bottom: 100px;" >
+          <li>
+            <div class="collapsible-header active menuItem"><i class="fa fa-upload" aria-hidden="true"></i>Change Image</div>
+            <div class="collapsible-body menuItem">
+
+              <div class="row center-align">
+
+                <blockquote class="left-align">
+                  <b>Note:</b> If nothing happens within 10 seconds, its probably a broken image link.
+                </blockquote>
+                <br>
+
+                Upload image with a link:<br>
+                <div class="input-field col s12">
+
+                  <input id="imgLink" type="text" class="validate menuItem">
+                  <label for="imgLink">Link</label>
+
+                </div>
+
+                <div class="col s12 center-align">
+                  <button id="uploadImgWithLink" class="btn light-blue waves-effect waves-light menuItem">Upload</button>
+                </div>
+
+              </div>
+
+              <!--div class="input-field col s12">
+                Upload image from computer:
+                <input id="imgLink" type="text" class="validate">
+                <label for="imgLink">Link</label>
+              </div-->
+
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header menuItem"><i class="fa fa-arrows-alt" aria-hidden="true"></i>Resize Image</div>
+            <div class="collapsible-body menuItem">
+
+              <form class="imgSliders">
+
+                <p class="range-field">
+                  Width:<br>
+                  <input type="range" class="menuItem imgWidth" min="0" max="2500" value="{{imgWidth}}"/>
+                </p>
+
+                <p class="range-field">
+                  Height:<br>
+                  <input type="range" class="menuItem imgHeight" min="0" max="2500" value="{{imgHeight}}"/>
+                </p>
+
+              </form>
+
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header menuItem"><i class="fa fa-sliders" aria-hidden="true"></i>Image Effects</div>
+            <div class="collapsible-body menuItem">
+
+              <blockquote><b>Note:</b> You may only have one effect active. <br> </blockquote>
+
+              <form class="imgSliders">
+                <p class="range-field">
+                  Grayscale:
+                  <input type="range" class="menuItem imgGrayscale" min="0" max="100" value="0"/>
+                </p>
+
+                <p class="range-field">
+                  Blur:
+                  <input type="range" class="menuItem imgBlur" step="0.1" min="0" max="20" value="0"/>
+                </p>
+
+                <p class="range-field">
+                  Brightness:
+                  <input type="range" class="menuItem imgBrightness" min="0" max="250" value="100"/>
+                </p>
+
+                <p class="range-field">
+                  Contrast:
+                  <input type="range" class="menuItem imgContrast" min="0" max="250" value="100"/>
+                </p>
+
+                <p class="range-field">
+                  Color-Rotate:
+                  <input type="range" class="menuItem imgRotate" min="0" max="360" value="0"/>
+                </p>
+
+                <p class="range-field">
+                  Invert:
+                  <input type="range" class="menuItem imgInvert" min="0" max="100" value="0"/>
+                </p>
+
+                <p class="range-field">
+                  Opacity:
+                  <input type="range" class="menuItem imgOpacity" min="0" max="100" value="100"/>
+                </p>
+
+                <p class="range-field">
+                  Saturate:
+                  <input type="range" class="menuItem imgSaturate" min="0" max="250" value="100"/>
+                </p>
+
+                <p class="range-field">
+                  Sepia:
+                  <input type="range" class="menuItem imgSepia" min="0" max="100" value="0"/>
+                </p>
+              </form>
+
+              <br>
+              <div class="col s12 center-align">
+                <button id="imgResetEffects" class="btn light-blue waves-effect waves-light menuItem">Reset all effects</button>
+              </div>
+
+            </div>
+          </li>
+        </ul>
+    </div>
+    <!-- End of imgEditor -->
+
+    <div id="textEditor" class="allEditors menuItem">
+
+      <ul class="collapsible menuItem" data-collapsible="accordion" style="margin-bottom: 100px;" >
+        <li>
+
+          <div class="collapsible-header active menuItem"><i class="fa fa-text-height" aria-hidden="true"></i>Toggle Text Style</div>
+          <div class="collapsible-body menuItem">
+
+            <blockquote> <b>Note:</b> You must select the text you want to toggle the emphasis on. </blockquote>
+            <br>
+
+            <div class="col s12 menuItem">
+              Text Emphasis:<br><br>
+              <button name="bold" class="btn light-blue white-text selTextBtn menuItem"><i class="fa fa-bold menuItem" aria-hidden="true"></i></button>
+              <button name="italic" class="btn light-blue white-text selTextBtn menuItem"><i class="fa fa-italic menuItem" aria-hidden="true"></i></button>
+              <button name="underline" class="btn light-blue white-text selTextBtn menuItem"><i class="fa fa-underline menuItem" aria-hidden="true"></i></button>
+              <button name="line-through" class="btn light-blue white-text selTextBtn menuItem"><i class="fa fa-strikethrough menuItem" aria-hidden="true"></i></button>
+            </div>
+            <br>
+
+            <div class="col s12">
+              Paragraph Alignment:<br><br>
+              <button name="left" class="alignTextBtn btn light-blue white-text menuItem"><i class="fa fa-align-left menuItem" aria-hidden="true"></i></button>
+              <button name="center" class="alignTextBtn btn light-blue white-text menuItem"><i class="fa fa-align-justify menuItem" aria-hidden="true"></i></button>
+              <button name="right" class="alignTextBtn btn light-blue white-text menuItem"><i class="fa fa-align-right menuItem" aria-hidden="true"></i></button>
+            </div>
+            <br>
+
+            <div class="col s12 center-align">
+              <p id="resetTextStylingBtn" class="btn light-blue white-text menuItem">Reset Text Styling</p>
+            </div>
+
+          </div>
+
+        </li>
+
+        <li>
+
+          <div class="collapsible-header menuItem"><i class="fa fa-font" aria-hidden="true"></i>Change Font and Size</div>
+          <div class="collapsible-body menuItem">
+
+            <blockquote> <b>Note:</b> We recommend changing all similar text-items font simoultaneously, you may however disable this feature. </blockquote>
+            <br>
+            <div class="input-field col s12">
+              <!-- Header Fonts -->
+              <select class="fontSelector headerFonts" name="type" for="type">
+                <option value="" disabled selected>Choose Font</option>
+                <option class="fontOption" value="Roboto" style="font-style:Roboto;">Roboto</option>
+                <option class="fontOption" value="Open Sans" style="font-style:Open Sans;">Open Sans</option>
+                <option class="fontOption" value="Oswald" style="font-style: Oswald;">Oswald</option>
+              </select>
+              <label for="fonts">Available fonts:</label>
+
+              <!-- Bread-text fonts TODO -->
+
+              <!-- Size selector -->
+              <p class="range-field">
+                Font Size:
+                <input type="range" id="fontSize" class="menuItem" min="0" max="7" step="0.1"/>
+              </p>
+
+
+              <form>
+                <p class="center-align menuItem">
+
+                  <input type="checkbox" class="filled-in menuItem" name="applyFontToAllText" id="applyFontToAllText" checked="checked" />
+                  <label class="menuItem" for="applyFontToAllText">Apply this to all similar text items.</label>
+
+                </p>
+              </form>
+
+            </div>
+
+          </div>
+
+        </li>
+
+        <li>
+
+          <div class="collapsible-header menuItem"><i class="fa fa-barcode" aria-hidden="true"></i>Text Color</div>
+          <div class="collapsible-body textColor menuItem">
+
+            <blockquote> <b>Note:</b> We recommend changing all text colorization simoultaneously, you may however disable this feature. </blockquote>
+            <br>
+
+            {{>colorChooser}}
+
+            <form>
+              <p class="center-align menuItem">
+
+                <input type="checkbox" class="filled-in menuItem" name="applyToAllText" id="applyToAllText" checked="checked" />
+                <label class="menuItem" for="applyToAllText">Apply this to all similar text items.</label>
+
+              </p>
+            </form>
+
+          </div>
+
+        </li>
+
+      </ul>
+
+    </div>
+    <!-- End of textEditor -->
+
+    <div id="containerEditor" class="allEditors menuItem">
+
+      <ul class="collapsible menuItem" data-collapsible="accordion" style="margin-bottom: 100px;" >
+        <li>
+
+          <div class="collapsible-header active menuItem"><i class="fa fa-barcode" aria-hidden="true"></i>Container Color</div>
+          <div class="collapsible-body menuItem">
+
+            <blockquote> <b>Note:</b> We recommend changing all container colorization simoultaneously, you may however disable this feature. </blockquote>
+            <br>
+
+            {{>colorChooser}}
+
+            <form>
+              <p class="center-align menuItem">
+
+                <input type="checkbox" class="filled-in menuItem" name="applyToAllContainers" id="applyToAllContainers" checked="checked" />
+                <label class="menuItem" for="applyToAllContainers">Apply this to all similar container items.</label>
+
+              </p>
+            </form>
+
+          </div>
+
+        </li>
+
+      </ul>
+
+    </div>
+    <!-- End of containerEditor -->
+
+  </div>
+
+  <div id="userPageDiv" class="col s12">
+    <!-- Render dynamic template, based on what the user clicked on. -->
+    {{> Template.dynamic template=editThis }}
+  </div>
+
+  <div id="controlBtnHolder" style="z-index:1001;">
+
+    <button onClick="FlowRouter.go('/sitebuilder')" class="waves-effect waves-light btn-large red z-depth-5 hoverable">Go Back</button>
+    <button id="publish" class="waves-effect waves-light btn-large light-blue z-depth-5 hoverable"><i style="font-size:18px;" class="fa fa-floppy-o" aria-hidden="true"></i> &nbsp;Publish</button>
+
+  </div>
+
+</div>
+
+</template>

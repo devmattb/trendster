@@ -1,0 +1,94 @@
+    /** Override Meteor Link CSS **/
+    html body { font-family: Roboto, GillSans, Calibri, Trebuchet, sans-serif !important;}
+    html a {text-decoration: none!important; color:inherit!important;}
+    html a:hover {text-decoration: none!important; color:inherit!important;}
+    html a:active {text-decoration: none!important; color:inherit!important;}
+    html a:visited {text-decoration: none!important; color:inherit!important;}
+    html blockquote {border-left: 5px solid #3399ff!important; }
+
+    input[type="search"] {
+
+        height: 60px !important; /* or height of nav */
+        border-bottom: 0px;
+    }
+
+    input[type="checkbox"].filled-in:checked + label:after{
+     background-color: #3399ff!important;
+    }
+
+    /* Form styling standards */
+    input[type=text]:focus + label { color: #3399ff!important; }
+    input[type=text]:focus { border-bottom: 1px solid #3399ff!important; }
+
+    input[type=email]:focus + label  {color: #3399ff!important;}
+    input[type=email]:focus { border-bottom: 1px solid #3399ff!important; }
+
+    input[type=password]:focus + label { color: #3399ff!important; }
+    input[type=password]:focus {border-bottom: 1px solid #3399ff!important;}
+
+    .select-wrapper ul li > span {
+      color: #3399ff;
+    }
+
+    .containerSection {
+
+        width: 100%;
+        height: 800px;
+        background-color: rgba(0, 102, 153, 0.85);
+
+    }
+
+   .containerSection::after{
+
+        background-image: url('../img/homepage/people-1.jpeg');
+        content: '';
+        display: block;
+        height: 70%;
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+        top: -100px;
+
+    }
+
+    .containerSectionWhite {
+        margin: 0px;
+        background-color: #fff;
+        z-index: 10;
+        padding-top: 20px;
+        padding-bottom: 100px;
+        height: 600px;
+        width: 100%;
+    }
+
+    .waves-effect.waves-blue .waves-ripple {
+        background-color: rgba(0, 136, 204, 0.65);
+    }
+
+    .contactIcons {
+
+        position: relative;
+        top: 0.5vmin;
+        font-size: 2.5vmin;
+
+    }
+
+    .logo {
+
+        width: 200px;
+        position: relative;
+        top: -5px;
+        left: 10px;
+
+    }
+
+    #preloader {
+
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 99999;
+        background: #fff;
+    }

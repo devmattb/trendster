@@ -1,0 +1,13 @@
+<template name="uploadForm">
+  <!-- THIS IS BROKEM SO FAR -->
+  <img src="{{imageFile.link}}" alt="{{imageFile.name}}" />
+<!-- Same as: -->
+<!-- <img src="{{fileURL imageFile}}" alt="{{imageFile.name}}" /> -->
+<hr>
+  {{#with currentUpload}}
+    Uploading <b>{{file.name}}</b>:
+    <span id="progress">{{progress.get}}%</span>
+  {{else}}
+    <input id="fileInput" type="file" />
+  {{/with}}
+</template>

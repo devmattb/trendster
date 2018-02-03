@@ -1,0 +1,108 @@
+<template name="DevToolsLayout">
+
+  <header>
+
+      {{> includes }}
+
+      <script>
+
+        Tracker.afterFlush(function(){
+
+            $('select').material_select();
+
+        });
+
+      </script>
+
+  </header>
+  {{> preloader}}
+  <div class="row">
+    <!-- ADD A TEMPLATE TO OUR templateInfo collection in our DB -->
+    <div class="col s12">
+      <h1 class="header center-align"> <img style="width: 250px; margin-top: -15px;" src="img/homepage/logo_blue.png"> &nbsp;Developer Tools:</h1>
+      <br><br>
+    </div>
+    <div class="col s6 m6 l6">
+
+        <form id="addTemplate" class="col s9 offset-s1">
+
+          <h5 class="center-align"> Add a Template </h5>
+
+          <div class="input-field col s12">
+            <input id="templateName" name="templateName" type="text" class="validate">
+            <label for="templateName">Template Render Name</label>
+          </div>
+
+          <div class="input-field col s12">
+            <input id="templateTitle" name="templateTitle" type="text" class="validate">
+            <label for="templateTitle">Template Title (displayed to user)</label>
+          </div>
+
+          <p style="margin-left:10px;"><b>Note:</b> "Template Name" must be <b>the same name</b> as the HTML document in our files archive. Naming Structure: <b>{TYPE}Template{ID_NUM}</b>.</p>
+          <br>
+
+          <div class="input-field col s12">
+          <select  id="templateStyleCategory">
+            <option value="" disabled selected>Template Style Category</option>
+            <option value="Influencer">Influencer</option>
+            <option value="Athlete">Athlete</option>
+            <option value="Cinematographer">Cinematographer</option>
+          </select>
+          <label>Materialize Select</label>
+        </div>
+
+        <div class="input-field col s12">
+        <select id="templateTypeCategory">
+          <option value="" disabled selected>Template Type Category</option>
+          <option value="home">home</option>
+          <option value="flow">flow</option>
+          <option value="shop">shop</option>
+          <option value="other">other</option>
+        </select>
+        <label>Materialize Select</label>
+      </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="templateThumbnailAddress" name="templateThumbnailAddress" type="text" class="validate">
+              <label for="templateThumbnailAddress">Template Thumbnail Address</label>
+              <p><b>Note:</b> "Template Thumbnail Adress" must be <b>phrased</b> as the following example: <b>img/dashboard/template_images/homeTemplate1/shop.PNG</b>.</p>
+            </div>
+          </div>
+
+          <div class="center-align">
+
+            <button type="submit" role="submit" class="waves-effect waves-light center-align btn light-blue">Add Template</button>
+
+         </div>
+
+        </form>
+
+    </div>
+
+    <!-- ADD ALPHA KEY(S) TO OUR alphaKey collection in our DB -->
+    <div class="col s6 m6 l6">
+
+        <form id="addAlphaKey" class="col s9 offset-s1">
+
+          <h5 class="center-align"> Add Alpha Key(s) </h5>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="numGenAKeys" name="numGenAKeys" type="text" class="validate">
+              <label for="numGenAKeys">How many?</label>
+            </div>
+          </div>
+
+          <div class="center-align">
+
+            <button type="submit" role="submit" class="waves-effect waves-light center-align btn light-blue">Generate Alpha Keys</button>
+
+         </div>
+
+        </form>
+
+    </div>
+
+  </div>
+</template>

@@ -1,0 +1,264 @@
+<template name="SettingsLayout">
+    <header>
+
+    {{> includes }}
+    <link type="text/css" href="css/settings_stylesheet.css" rel="stylesheet">
+
+    <script>
+
+    Tracker.afterFlush( function () {
+
+      /**
+      *   Edit profile / View profile functions
+      **/
+      $("#editInfo").click(function(){
+
+          $("#profile").toggleClass("scale-out");
+          window.setTimeout(function(){
+            $("#accountSettings").toggleClass("scale-out");
+          }, 300);
+
+      });
+
+      $(".backToProfile").click(function(){
+
+          $("#accountSettings").toggleClass("scale-out");
+          window.setTimeout(function(){
+            $("#profile").toggleClass("scale-out");
+          }, 300);
+
+      });
+
+    });
+
+    </script>
+
+    </header>
+
+    <main>
+      {{> preloader}}
+      {{> dashNavbar }}
+
+      {{> feedbackModals }}
+      {{> settingsModals }}
+      <div class="row">
+        <br>
+        <div class="col s12 center-align ">
+
+          <ul id="tabs-swipe-demo" class="tabs">
+            <li class="tab col s2 offset-s3"><a href="#site"><i class="fa fa-server" aria-hidden="true"></i> &nbsp; Site</a></li>
+            <li class="tab col s2"><a class="active" href="#account"><i class="fa fa-user-circle-o" aria-hidden="true"></i> &nbsp; Account</a></li>
+            <li class="tab col s2"><a href="#other"><i class="fa fa-cog" aria-hidden="true"></i> &nbsp; Other</a></li>
+          </ul>
+
+          <br>
+          <!-- SITE -->
+          <div id="site" class="col s12">
+
+            <!-- Site Overview -->
+            <div class="col s12 m8 l6 offset-l3 offset-m2">
+              <div class="card hoverable">
+                <div class="card-image">
+                  <img width="650" src="img/homepage/people-1.jpeg">
+                  <span class="card-title">{{displayName}}</span>
+                </div>
+                <div class="card-content">
+                  <p>{{siteDesc}}</p>
+                </div>
+              </div>
+
+              <a href="#editSiteInfo"><button class="waves-effect waves-light center-align btn light-blue">EDIT SITE INFO</button></a>
+            </div>
+
+          </div>
+
+          <!-- ACCOUNT -->
+          <div id="account" class="col s12">
+
+            <!-- Profile Overview -->
+            <div id="profile" class="col s12 m10 l8 offset-l2 offset-m1 scale-transition scale-out">
+              <div class="card hoverable">
+                <div class="card-content">
+                  <img src="img/dashboard/user_images/empty_profile.jpg" class="circle" style="width: 100px; height: 100px;">
+
+                  <div class="center" style="text-align: left;">
+                    <h4 style="text-indent: 0px;" class="center">{{displayName}}</h4>
+                    {{#if hasAlphaKey}}
+                      <div class="left"><span class="new badge red lighten-2" data-badge-caption="ALPHA Member"></span></div>
+                    {{else}}
+                      <div class="left"><span class="new badge blue lighten-2" data-badge-caption="Regular Member"></span></div>
+                    {{/if}}
+
+                    <br>
+                    <h5><b>Website Category: </b>{{type}}</h5>
+                    <h5><b>Social Media Pages: </b>{{media}}</h5>
+                    <h5><b>Site Link: </b>http://www.Trendster.Site/{{displayName}}</h5>
+                  </div>
+                  <br>
+                  <button id="editInfo" class="waves-effect waves-light btn light-blue"> Edit Info </button>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- ACCOUNT SETTINGS -->
+            <div style="margin-top: -350px;" id="accountSettings" class="col s12 scale-transition scale-out">
+              <button class="backToProfile waves-effect waves-light center-align btn light-blue">BACK TO PROFILE</button>
+            <ul class="collection z-depth-1" style="text-align: left;" >
+                <!--<br>
+                <li class="collection-item">Current Display Name: CURRENT_DISPLAY_NAME
+                    <form id="settingsDisplayName">
+                        <div class="row">
+                            <div class="input-field col s4">
+                              <input id="displayName" type="text" class="validate">
+                              <label for="displayName">Change Display Name</label>
+                            </div>
+                        </div>
+                        <button type="submit" role="submit" class="settingsChangeBtn waves-effect waves-light center-align btn light-blue">Change</button>
+                    </form>
+                </li-->
+                <br>
+                <li class="collection-item">Change Email:
+
+                    <form id="settingsEmail">
+                        <div class="row">
+
+                            <div class="input-field col s3">
+                              <input id="email" type="email" class="validate">
+                              <label for="email">Email</label>
+                            </div>
+
+                        </div>
+                        <button type="submit" role="submit" class="settingsChangeBtn waves-effect waves-light center-align btn light-blue">Change Email</button>
+                    </form>
+
+                </li>
+                <br>
+                <li class="collection-item">Change Password:
+
+                    <form id="settingsPassword">
+                        <div class="row">
+
+                            <div class="input-field col s3">
+                              <input id="oldPass" type="password" class="validate">
+                              <label for="oldPass">Old Password</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                              <input id="newPass" type="password" class="validate">
+                              <label for="newPass">New Password</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                              <input id="newPass2" type="password" class="validate">
+                              <label for="newPass2">Repeat New Password</label>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" role="submit" class="settingsChangeBtn waves-effect waves-light center-align btn light-blue">
+                            Change Password
+                        </button>
+                    </form>
+
+                </li>
+                <br>
+                <li class="collection-item">Current Social Media Pages: <b>{{media}}</b>
+                    <br><br>
+                    <form id="settingsMedia">
+                        <div class="row">
+
+                             <div class="input-field col s4">
+                                <select id="media" name="media" for="media" multiple>
+                                  <option value="" disabled selected>Choose your option</option>
+                                  <option value="Facebook">Facebook</option>
+                                  <option value="Instagram">Instagram</option>
+                                  <option value="Twitter">Twitter</option>
+                                  <option value="Youtube">Youtube</option>
+                                  <option value="Snapchat">Snapchat</option>
+                                  <option value="Pinterest">Pinterest</option>
+                                  <option value="Tumblr">Tumblr</option>
+                                  <option value="Other">Other</option>
+                                </select>
+                                <label>Your Social Media Pages</label>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" role="submit" class="settingsChangeBtn waves-effect waves-light center-align btn light-blue">
+                            Change Media
+                        </button>
+
+                    </form>
+
+                </li>
+                <br>
+                <li class="collection-item">Current Website Category: <b>{{type}}</b>
+                    <br><br>
+                    <form id="settingsCategory">
+
+                        <div class="row">
+
+                          <div class="input-field col s4">
+                            <select id="type" name="type" for="type">
+                              <option value="" disabled selected>Choose your option</option>
+                              <option value="Social Media Influencer">Social Media Influencer</option>
+                              <option value="Business/Company">Business/Company</option>
+                              <option value="Other">Other</option>
+                            </select>
+                            <label>Website Category</label>
+                          </div>
+
+                        </div>
+
+                        <button type="submit" role="submit" class="settingsChangeBtn waves-effect waves-light center-align btn light-blue">
+                            Change Category
+                        </button>
+
+                    </form>
+
+                </li>
+                <br>
+                <li class="collection-item">Current Alpha Key:
+                  {{#if hasAlphaKey}}
+                  <b>{{alphaKey}}</b>
+                  {{else}}
+                    None
+                    <form id="settingsAlphaKey">
+                        <div class="row">
+
+                            <div class="input-field col s4">
+                              <input id="alphaKey" type="text" class="validate">
+                              <label for="alphaKey">Alpha Key</label>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" role="submit" class="settingsChangeBtn waves-effect waves-light center-align btn light-blue">
+                            Add Alpha Key
+                        </button>
+                    </form>
+                  {{/if}}
+
+                </li>
+            </ul>
+
+            <button class="backToProfile waves-effect waves-light center-align btn light-blue">BACK TO PROFILE</button>
+
+          </div>
+        </div>
+
+          <!-- OTHER -->
+          <div id="other" class="col s12">
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {{> feedbackButtons }}
+    </main>
+</template>

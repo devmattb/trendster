@@ -1,0 +1,56 @@
+<template name="templatePreview">
+
+  <script>
+
+    Tracker.afterFlush( function () {
+
+      /**
+      *     CHOOSE PAGE: Note the page we currently are browsing, and save it to then proceed to the next step.
+      **/
+      $("#choosePage").click(function(){
+
+        const stepNum = Template.SiteBuilderLayout.siteBuilderStep.get();
+        const chosenTemplate = $(this).attr("name");
+        const thumbnailName = $(this).attr("thumbnailname");
+        //Template.templatePreview.templateThumbnailAddr.set(thumbnailName);
+        // Work-Around: The input field in our doc variable didnt want to variate, so we handle the input types as below:
+
+        if ( stepNum == 2 ) {
+          Meteor.call( 'accountUpsert', Session.get("id"), { $set: { "pageOne": chosenTemplate, "siteBuilderStep": stepNum+1, pageOneThumbnailAddr: thumbnailName }, } );
+          Template.SiteBuilderLayout.pageOneThumbnailAddr.set(thumbnailName);
+
+        } else if ( stepNum == 3 ) {
+          Meteor.call( 'accountUpsert', Session.get("id"), { $set: { "pageTwo": chosenTemplate, "siteBuilderStep": stepNum+1, pageTwoThumbnailAddr: thumbnailName  }, } );
+          Template.SiteBuilderLayout.pageTwoThumbnailAddr.set(thumbnailName);
+        } else if ( stepNum == 4 ) {
+          Meteor.call( 'accountUpsert', Session.get("id"), { $set: { "pageThree": chosenTemplate, "siteBuilderStep": stepNum+1, pageThreeThumbnailAddr: thumbnailName  }, } );
+          Template.SiteBuilderLayout.pageThreeThumbnailAddr.set(thumbnailName);
+        } else if ( stepNum == 5 ) {
+          Meteor.call( 'accountUpsert', Session.get("id"), { $set: { "pageFour": chosenTemplate, "siteBuilderStep": stepNum+1 }, } );
+          //Template.SiteBuilderLayout.pageFourThumbnailAddr.set($(this).attr("thumbnailname"));
+        }
+
+        Materialize.toast("Added page successfully!", 4000, "green");
+
+        window.setTimeout(function(){ FlowRouter.go("/sitebuilder"); },50); // Redirect....
+
+      });
+
+    });
+
+  </script>
+
+  {{> includes }}
+  {{> preloader }}
+
+  <!-- Render dynamic template, based on what the user clicked on. -->
+  {{> Template.dynamic template=renderTemplateName }}
+
+  <div id="controlBtnHolder">
+
+    <a href="/sitebuilder"><button class="waves-effect waves-light btn-large red z-depth-5 hoverable">Go Back</button></a>
+    <button id="choosePage" thumbnailname="{{templateThumbnailAddr}}" name="{{renderTemplateName}}" class="waves-effect waves-light btn-large light-blue z-depth-5 hoverable">Choose Page</button>
+
+  </div>
+
+</template>

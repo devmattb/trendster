@@ -1,0 +1,54 @@
+<template name="NoAccessLayout">
+  <header>
+
+      {{> includes }}
+
+    <style>
+
+      body{overflow: hidden;}
+
+      #bkg {
+          height: 1500px;
+          width: 100%;
+          background-color: rgba(255,255,255,1);
+          z-index: 10;
+          overflow: hidden;
+      }
+
+      /*#bkg::after{
+
+          content: '';
+          display: block;
+          height: 100%;
+          position: absolute;
+          width: 100%;
+          z-index: -1;
+          top: 0px;
+          left: 0px;
+          background: url(img/people-1.jpeg);
+
+      }*/
+
+    </style>
+
+  </header>
+
+  <main>
+
+    {{> preloader}}
+    {{> allModals}}
+
+    <div id="bkg" >
+      <br><br>
+      <div class="center"><img style="width: 300px;" src="img/homepage/logo_blue.png"> </div>
+      <h1 style="font-weight: 400;" class="center">Error 401 - Unauthorized</h1>
+      <h5 class="center">We're sorry, but you currently lack access to this resource.</h5>
+      <br>
+      <div class="center"><hr style="width: 60%; border-color: #333;"></div>
+      <h5 class="center">If you believe this is a mistake, please <a href="#modal2"><span class="blue-text">Contact Us</span></a>.</h5>
+      <h5 class="center">Otherwise, you may <a href="/"><span class="blue-text">Return Home</span></a>.</h5>
+    </div>
+
+  </main>
+
+</template>

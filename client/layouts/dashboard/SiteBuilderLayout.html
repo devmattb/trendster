@@ -1,0 +1,378 @@
+<template name="SiteBuilderLayout">
+    <header>
+
+    {{> includes }}
+
+    <link type="text/css" href="css/sitebuilder_stylesheet.css" rel="stylesheet">
+
+    <script>
+
+        Tracker.afterFlush( function () {
+
+            var firstRun = true; // Handles first run anim.
+            var acc = Accounts.findOne({_id: Session.get("id")}); // Get account info for the upcomming operations...
+
+            $("#site").css({"display": "none"}); // Hide the user's site until the site is finished.
+
+            function handleView(hideThisElement, showThisElement) {
+
+                if ( !($(hideThisElement).hasClass("scale-out")) ) {
+
+                  $(hideThisElement).addClass("scale-out"); // Scale out
+                  window.setTimeout(function() { $(hideThisElement).hide(); },300); // Hide after scaled out
+
+                }
+
+                if ( $(showThisElement).hasClass("scale-out") ) {
+
+                  window.setTimeout(function() {  $(showThisElement).show(); }, 350);
+                  window.setTimeout(function() {  $(showThisElement).removeClass("scale-out"); }, 400); // Scale in
+
+                } else {
+                  $(showThisElement).hide();
+                  $(showThisElement).addClass("scale-out");
+                  window.setTimeout(function() {  $(showThisElement).show(); }, 350);
+                  window.setTimeout(function() {  $(showThisElement).removeClass("scale-out"); }, 400);
+                }
+
+           }
+
+           function checkStep() {
+
+             const currentStepNum = Template.SiteBuilderLayout.siteBuilderStep.get();
+
+             if ( currentStepNum == 1 ) {
+
+               $(".previousStep").css({"display": "none"});
+               Template.SiteBuilderLayout.stepInfo.set('Choose the <b>layout</b> of your site:');
+               handleView(".templateBoxContainer", ".previewBoxContainer");
+
+             } else if ( currentStepNum == 2 ) {
+
+               $(".skipStep").css({"display": "none"});
+               $(".previousStep").css({"display": "block"});
+               Template.SiteBuilderLayout.stepInfo.set('Choose the "<b>Home</b>" page of your site:');
+               $(".page").hide(); // Hide all excess pages
+               $(".pageOne").show(); // Display the wanted pages.
+               handleView(".previewBoxContainer", ".templateBoxContainer");
+
+             } else if ( currentStepNum == 3  ) {
+
+               $(".skipStep").css({"display": "block"});
+               Template.SiteBuilderLayout.stepInfo.set('Choose the <b>2nd</b> page of your site:');
+               $(".page").hide(); // Hide all excess pages
+               $(".pageTwo").show(); // Display the wanted pages.
+               handleView(".previewBoxContainer", ".templateBoxContainer");
+
+             }  else if ( currentStepNum == 4  ) {
+
+               $(".previousStep").text("Previous Step");
+               Template.SiteBuilderLayout.stepInfo.set('Choose the <b>3rd</b> page of your site:');
+                $(".hideOnLastStep").show(); // Show titles for better positioning.
+               $(".page").hide(); // Hide all excess pages
+               $(".pageThree").show(); // Display the wanted pages.
+               handleView(".previewBoxContainer", ".templateBoxContainer");
+               $("#site").css({"display": "none"});
+
+             }  else if ( currentStepNum == 5  ) {
+
+               $(".skipStep").css({"display": "none"});
+               $(".previousStep").text("Rebuild your Site");
+               Template.SiteBuilderLayout.stepInfo.set("Congratulations!");
+               $(".hideOnLastStep").hide(); // Hide titles for better positioning.
+               $(".page").hide(); // Hide all excess pages
+               $(".pageFour").show(); // Display the wanted pages.
+               handleView(".previewBoxContainer", ".templateBoxContainer");
+
+               $("#site").css({"display": "block"}); // Show the user's site!
+
+               window.setTimeout(function(){
+                  $("#site").removeClass("scale-out");
+               },300)
+
+             }
+
+           }
+
+          /**
+          *   Make sure the right step is showing when we enter the page.
+          **/
+          if(firstRun) { checkStep(); firstRun = false; }
+
+          /**
+          *   Click and hovers:
+          **/
+          $(".templateBox").hover(function(){
+            $(this).find(".card-title").fadeIn(300);
+          }, function(){
+            $(this).find(".card-title").fadeOut(100);
+          });
+
+          /**
+          *   STEP ONE: PICK A LAYOUT
+          **/
+          $(".previewBox").click(function(){
+
+              // Handle DB
+              const doc = { $set: { siteBuilderStep: 2, }, };
+              Meteor.call( 'accountUpsert', Session.get("id"), doc );
+              Template.SiteBuilderLayout.siteBuilderStep.set(2);
+
+              // Handle Anim
+              var name = "."+$(this).attr("name");
+
+              // Hide this step:
+              $(".previewBoxContainer").toggleClass("scale-out");
+              window.setTimeout(function() {
+                 $(".previewBoxContainer").hide();
+                 $(".allTemplates").show();
+              },300)
+
+              // Show next step:
+              $(name).show();
+              window.setTimeout(function() {
+                $(name).toggleClass("scale-out");
+              },400);
+              Template.SiteBuilderLayout.stepInfo.set('Choose the "<b>Home</b>" page of your site:');
+              $(".previousStep").show();
+          });
+
+          /**
+          *  PREVIOUS STEP: Animate and handle DB.
+          **/
+          $(".previousStep").click(function(){
+
+              // Handle DB
+             if ( Template.SiteBuilderLayout.siteBuilderStep.get() != 1 ) {
+
+                // Handle the documentation of the step process
+                const doc = { $set: { siteBuilderStep: Template.SiteBuilderLayout.siteBuilderStep.get()-1, }, };
+                Meteor.call( 'accountUpsert', Session.get("id"), doc );
+                Template.SiteBuilderLayout.siteBuilderStep.set(Template.SiteBuilderLayout.siteBuilderStep.get()-1);
+
+                // Handle the animation part
+                checkStep();
+
+            } else {
+
+              Materialize.toast("You're already on the first page!", 4000, "red");
+
+            }
+
+          });
+
+          /**
+          *  RENDER CLICKED TEMPLATE THUMBNAIL: Display the thumbnail that the user chose.
+          **/
+          $(".templateBox").click(function(){
+
+              // Make sure we render the correct template in the /preview directory.
+              Template.templatePreview.renderTemplateName.set($(this).attr("name"));
+              Template.templatePreview.templateThumbnailAddr.set($(this).find('img').attr("src"));
+              FlowRouter.go("/preview")
+
+          });
+
+          /**
+          *   FINAL STEP: Edit pages...
+          **/
+          $(".editThisPage").click(function(){
+
+              if ( $(this).hasClass("active") ) {
+              // Make sure we render the correct template in the /edit directory.
+              Template.EditPageLayout.editThis.set($(this).attr("name"));
+              FlowRouter.go("/edit")
+
+              } else {
+                $(".editThisPage").removeClass("active");
+                $(this).addClass("active");
+              }
+
+          });
+
+
+        });
+
+    </script>
+
+    </header>
+
+    <main>
+      {{> preloader}}
+      {{> dashNavbar }}
+      {{> feedbackModals }}
+      <div class="row" >
+
+        <!-- MAIN CONTENT -->
+        <div class="col s12 center-align">
+            <br>
+            <h1 class="hideOnLastStep"> {{{stepInfo}}} </h1>
+            <h6 class="hideOnLastStep"> Please note that you may not edit content (text, colors, images) until at the final step. </h6>
+            <br><br>
+
+            <!-- STEP 1 -->
+            <div class="col s8 push-s2 pull-s2 center-align">
+                <!-- Template-Style color for image: rgb(237,218,156) -->
+                <!-- Template-Preview Image Size:  800 x 920 -->
+                <div class="templatePreviewContainer center-align col s12">
+
+                    <div class="previewBoxContainer row scale-transition">
+
+                        <!-- PREVIEW BOXES -->
+                        <div id="influencerStandard" class="previewBox col s6 m4 l2" name="influencerStandard">
+                            <div class="center-align" >
+
+                                <img src="img/dashboard/template_images/flaticons/template_preview_1.png" class="responsive-image"/>
+                                <h6> Influencer </h6>
+
+                            </div>
+                        </div>
+
+                        <div class="previewBox col s6 m4 l2">
+                            <div class="center-align">
+
+                                <img src="img/dashboard/template_images/flaticons/template_preview_1.png" class="responsive-image"/>
+                                <h6> Influencer </h6>
+
+                            </div>
+                        </div>
+
+                        <div class="previewBox col s6 m4 l2">
+                            <div class="center-align">
+
+                                <img src="img/dashboard/template_images/flaticons/template_preview_1.png" class="responsive-image"/>
+                                <h6> Influencer </h6>
+
+                            </div>
+                        </div>
+
+                        <div class="previewBox col s6 m4 l2">
+                            <div class="center-align">
+
+                                <img src="img/dashboard/template_images/flaticons/template_preview_1.png" class="responsive-image"/>
+                                <h6> Influencer </h6>
+
+                            </div>
+                        </div>
+
+                        <div class="previewBox col s6 m4 l2">
+                            <div class="center-align">
+
+                                <img src="img/dashboard/template_images/flaticons/template_preview_1.png" class="responsive-image"/>
+                                <h6> Influencer </h6>
+
+                            </div>
+                        </div>
+
+                        <div class="previewBox col s6 m4 l2">
+                            <div class="center-align">
+
+                                <img src="img/dashboard/template_images/flaticons/template_preview_1.png" class="responsive-image"/>
+                                <h6> Influencer </h6>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- STEP 2-4 -->
+            <div class="col s11 offset-s1 allTemplates">
+
+              <!-- TEMPLATE CONTAINERS -->
+              <div class="influencerStandard row scale-transition scale-out templateBoxContainer">
+
+                    {{#each influencerHomeTemplate}}
+
+                      <!-- TEMPLATE PAGE ONE -->
+                      <div class="page pageOne templateBox col s12 m5 l5 card" name="{{this.templateRenderName}}">
+                        <div class="center-align card-image" >
+
+                            <img src="{{this.templateThumbnailAddress}}" class="templateImg z-depth-3"/>
+                            <span class="card-title">{{this.templateTitle}}</span>
+
+                          </div>
+                      </div>
+
+                    {{/each}}
+
+                    {{#each influencerFlowTemplate}}
+
+                      <!-- TEMPLATE PAGE TWO (FLOW) -->
+                      <div class="page pageTwo templateBox col s12 m5 l5 card" name="{{this.templateRenderName}}">
+                        <div class="center-align card-image" >
+
+                            <img src="{{this.templateThumbnailAddress}}" class="templateImg z-depth-3"/>
+                            <span class="card-title">{{this.templateTitle}}</span>
+
+                          </div>
+                      </div>
+
+                    {{/each}}
+
+
+                    {{#each influencerShopTemplate}}
+
+                      <!-- TEMPLATE PAGE THREE (SHOP) -->
+                      <div class="page pageThree templateBox col s12 m5 l5 card" name="{{this.templateRenderName}}">
+                        <div class="center-align card-image" >
+
+                            <img src="{{this.templateThumbnailAddress}}" class="templateImg z-depth-3"/>
+                            <span class="card-title">{{this.templateTitle}}</span>
+
+                          </div>
+                      </div>
+
+                    {{/each}}
+
+                  <div class="col s0 m1 l1 left-align"></div> <!-- DUMMY -->
+
+              </div>
+              <!-- END OF INFLUENCER STANDARD ALTERNATIVES -->
+
+              <!-- DISPLAY SITE -->
+              <div id="site" class="col s11 scale-transition scale-out" style="position: relative; top: 50px;" >
+                <div style="position:relative; top: -70px;">
+                  <h1> {{{stepInfo}}} </h1>
+                  <h6> You've reached the final step - Editing your page! Click your page to dive in! </h6>
+                </div>
+                <!-- Site Overview -->
+                <div class="col s12 m12 l10 offset-l1 center-align">
+                  <div class="carousel center-align col s12">
+
+                    <!-- DESKTOP -->
+                    <a class="carousel-item editThisPage active" name="{{pageOne}}"><img src="{{pageOneThumbnailAddr}}"></a>
+                    <a class="carousel-item editThisPage" name="{{pageTwo}}"><img src="{{pageTwoThumbnailAddr}}"></a>
+                    <a class="carousel-item editThisPage" name="{{pageThree}}"><img src="{{pageThreeThumbnailAddr}}"></a>
+
+                  </div>
+                  <p style="position: relative; top: -250px;" class="hide-on-large-only flow-text"> Please swipe to navigate between pages. </p>
+                  <a style="position: relative; top: -250px;" href="#editSiteInfo"><button class="waves-effect waves-light center-align btn light-blue">EDIT SITE INFO</button></a>
+                </div>
+
+              </div>
+              {{> settingsModals}}
+
+          </div>
+
+          <div class="col s12 hide-on-med-and-down" id="stepCounter">
+            <h6 style="margin-left: -15px;"><b> Step {{siteBuilderStep}} / 5 </b> </h6>
+
+            <button onclick="previousStep()" class="previousStep btn-large waves-effect waves-light red z-depth-5"> Previous Step </button>
+            <button class="skipStep disabled waves-effect waves-light btn-large light-blue z-depth-5"> Skip Step </button>
+          </div>
+
+          <div class="col s12 hide-on-large-only" id="stepCounter2">
+            <h6 style="margin-left: -15px;"><b> Step {{siteBuilderStep}} / 5 </b> </h6>
+            <button class="previousStep btn-large waves-effect waves-light red z-depth-5"> Previous Step </button>
+            <button class="skipStep disabled waves-effect waves-light btn-large light-blue z-depth-5"> Skip Step </button>
+          </div>
+
+      </div>
+    </div>
+
+    </main>
+</template>

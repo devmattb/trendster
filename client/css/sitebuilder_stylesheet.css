@@ -1,0 +1,38 @@
+html h1 { font-weight: 300; font-size: 40px;}
+
+.previewBox, .templateBox { margin-bottom: 40px; }
+.previewBox:hover , .templateBox:hover { cursor: pointer; }
+.templateBox img { transform: scale(1.05); }
+.previewBox img:hover, .templateBox img:hover { transform: scale(1.10); }
+.templateImg { width: 100%; }
+
+.templateBox .card-title { background-color: rgba(0,0,0,0.75); width: 100%; margin-bottom: -12px; display:none; font-size: 16px;}
+
+#stepCounter { position: fixed; bottom: 10px; left: 10px; }
+#stepCounter2 { position: fixed; bottom: 40px; left: 10px; }
+
+.previousStep { position: fixed; bottom: 10px; left: 10px; z-index: 99;}
+.previousStep:hover, .skipStep:hover { transform: scale(1.05);}
+
+.skipStep { position: fixed; bottom: 10px; right: 10px; z-index: 99;}
+
+h1 b {font-weight: 400;}
+
+.pageTwo { display: none; }
+.pageThree { display: none; }
+.pageFour { display: none; }
+
+.carousel .carousel-item { width:600px; }
+.carousel { height: 650px; position: relative; top: -260px; }
+
+html #controlBtnHolder {
+
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  z-index: 99;
+
+}
+
+html #controlBtnHolder button { margin-right: 5px; z-index: 1001;}
+html #controlBtnHolder .hoverable:hover { transform: scale(1.1); cursor: pointer; }

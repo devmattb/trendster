@@ -1,0 +1,53 @@
+#editorMenu {
+
+  position: fixed;
+  bottom: 0px;
+  right: -20%;
+  width: 20%;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+#editPageLayout .selected{ outline:1px solid #3399ff!important; outline-style:dashed!important;}
+#editPageLayout label{ color:#444444!important;}
+
+#editorMenu .fa { font-size: 18px; }
+#editorMenu .collapsible-header.active { color: #2e67c1!important;}
+
+.allEditors { display: none; }
+
+input[type=range]::-webkit-slider-thumb {
+  background-color: #3399ff!important;
+}
+input[type=range]::-moz-range-thumb {
+  background-color: #3399ff!important;
+}
+input[type=range]::-ms-thumb {
+  background-color: #3399ff!important;
+}
+
+/***** These are to edit the thumb and the text inside the thumb *****/
+input[type=range] + .thumb {
+  background-color: #3399ff!important;
+}
+input[type=range] + .thumb.active .value {
+  color: #fff!important;
+}
+
+#editorMenu #textEditor button {
+
+  padding: 1px 10px;
+  margin: 3px;
+
+}
+
+#editorMenu #textEditor button:hover {
+
+  transform: scale(1.1);
+  transition: 0.1s;
+}
+
+#editorMenu #textEditor button .fa{ font-weight: 100!important;}
+
+.colorBox {height: 50px; width: 50px; display: inline-block; margin: 5px;}
+.colorBox:hover {transform: scale(1.2); cursor: pointer;}
